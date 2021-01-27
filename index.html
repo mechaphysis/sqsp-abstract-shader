@@ -13,28 +13,28 @@
 </html>
 
 <script>
-/* 
- The following shader and canvas code has been adapted to vanilla JS from the Gatsby JS source code of Angela Milosevic's website:
- https://www.angelamilosevic.com
- The purpose of this adaptation is for constructing a SquareSpace based replica of the site. 
- This replica exercise is part of iLoveCreatives Creative SquareSpace Design course:
- https://ilovecreatives.com/squarespace-online-course
-*/
-const FRAGMENT_SHADER = `
-#ifdef GL_ES
-precision mediump float;
-#endif
+  /* 
+  The following shader and canvas code has been adapted to vanilla JS from the Gatsby JS source code of Angela Milosevic's website:
+  https://www.angelamilosevic.com
+  The purpose of this adaptation is for constructing a SquareSpace based replica of the site. 
+  This replica exercise is part of iLoveCreatives Creative SquareSpace Design course:
+  https://ilovecreatives.com/squarespace-online-course
+  */
+  const FRAGMENT_SHADER = `
+  #ifdef GL_ES
+  precision mediump float;
+  #endif
 
-#define speed_slowdown 30.0
-#define intensity 12.0
-#define zoom 0.04
+  #define speed_slowdown 30.0
+  #define intensity 12.0
+  #define zoom 0.04
 
-uniform vec2 u_resolution;
-uniform vec2 u_mouse;
-uniform float u_time;
-uniform sampler2D u_texture;
+  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
+  uniform float u_time;
+  uniform sampler2D u_texture;
 
-void main() {
+  void main() {
   vec2 st = gl_FragCoord.xy / u_resolution.xy;
 
   vec3 color = vec3(1.0);
@@ -42,20 +42,19 @@ void main() {
   st.x += sin(((u_time / (speed_slowdown)) + st.x) * (intensity)) * zoom;
 
   vec3 first_image = texture2D(
-    u_texture,
-    (st / (1.0 + zoom * 4.0)) + (zoom * 2.0)
+  u_texture,
+  (st / (1.0 + zoom * 4.0)) + (zoom * 2.0)
   ).rgb;
 
   color *= first_image;
 
   gl_FragColor = vec4(color, 1.0);
-}
-`
-const IMAGE_SRC = 'assets/home-canvas.png'
+  }
+  `
+  const IMAGE_SRC = 'assets/home-canvas.png'
 
-const img = new Image();
-img.src = IMAGE_SRC
-
+  const img = new Image();
+  img.onload = function(){
     if (typeof window !== "undefined" && window.GlslCanvas) {
       const canvas = document.getElementById('abstract-shader')
       const sandbox = new window.GlslCanvas(canvas)
@@ -66,5 +65,7 @@ img.src = IMAGE_SRC
       canvas.height = img.height / devicePixelRatio
 
     }
+  }
+  img.src = IMAGE_SRC
 
 </script>
